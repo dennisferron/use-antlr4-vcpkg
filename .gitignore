@@ -1,0 +1,8 @@
+#Ignore folders added by the IDE
+.idea/
+
+# Ignore cmake build folders
+cmake-build-*/
+
+# Don't commit automatically downloaded artifacts (the ANTLR4 jar file)
+download/
