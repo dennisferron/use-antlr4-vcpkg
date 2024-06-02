@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 message(STATUS "toolchain: ${CMAKE_TOOLCHAIN_FILE}")
 
+add_subdirectory(test_rig)
+
 find_package(antlr4-runtime CONFIG REQUIRED)
 find_package(antlr4-generator CONFIG REQUIRED)
 
@@ -37,7 +39,8 @@ antlr4_generate(
         "${ANTLR4_TOKEN_DIRECTORY_LangLexer}"
 )
 
-add_executable(use_antlr4_vcpkg main.cpp)
+add_executable(use_antlr4_vcpkg main.cpp
+        test_rig/test_rig_main.cpp)
 target_link_libraries(use_antlr4_vcpkg antlr4_static)
 
 target_include_directories(use_antlr4_vcpkg PRIVATE "${ANTLR4_INCLUDE_DIR_LangLexer}" "${ANTLR4_INCLUDE_DIR_LangParser}")
