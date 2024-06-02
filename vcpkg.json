@@ -1,3 +1,3 @@
 {
-  "dependencies" : [ "antlr4" ]
+  "dependencies" : [ "antlr4", "tiny-process-library" ]
 }
