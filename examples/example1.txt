@@ -1,0 +1,12 @@
+// This is a comment
+/* another comment */
+
+let x = 1;
+
+let data = {| CSV(a, b, c)
+    1, 2, 3
+|};
+
+let query = {| SQL(e, f, g)
+    select 1 from tbl
+|};

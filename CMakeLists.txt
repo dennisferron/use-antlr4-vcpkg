@@ -4,11 +4,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 message(STATUS "toolchain: ${CMAKE_TOOLCHAIN_FILE}")
 
-add_subdirectory(test_rig)
-
 find_package(antlr4-runtime CONFIG REQUIRED)
 find_package(antlr4-generator CONFIG REQUIRED)
 
+# Download the jar file for antlr4 generator.
 include(FetchContent)
 FetchContent_Declare(
         antlr4_jar
@@ -17,7 +16,21 @@ FetchContent_Declare(
         DOWNLOAD_NO_EXTRACT TRUE
 )
 FetchContent_MakeAvailable(antlr4_jar)
+
+# This variable is used both by antlr4_generate and test_rig.
 set(ANTLR4_JAR_LOCATION ${PROJECT_SOURCE_DIR}/download/antlr-4.13.1-complete.jar)
+
+# Many generated and input file names are implicit based on grammar name.
+set(my_grammar "Lang")
+
+# This is really only needed by the test_rig, but I put
+# it here so that it's near the grammar name declaration.
+set(my_grammar_start_rule "prog")
+
+# This has to be added after find_package(antlr4-generator)
+# so that Java_JAVA_EXECUTABLE will be set, and it has to
+# be after we manually set ANTLR4_JAR_LOCATION, above.
+add_subdirectory(test_rig)
 
 antlr4_generate(
         LangLexer
@@ -49,33 +62,3 @@ target_include_directories(use_antlr4_vcpkg PRIVATE "${ANTLR4_INCLUDE_DIR}")
 #add_dependencies(use_antlr4_vcpkg antlr4_shared)
 #target_link_libraries(use_antlr4_vcpkg PRIVATE antlr4_shared)
 #target_compile_features(use_antlr4_vcpkg PUBLIC cxx_std_17)
-
-# add_custom_command and add_custom_target can be used
-# to do additional things with the parser such as
-# displaying the grammar graphically with a tool.
-
-#[[
-# TODO: Does this depend on the java files or the class files?
-# Or should there be one target for generating the code and
-# another target for compiling the code and another target
-# for grun ??
-add_custom_target(
-    LangParserInJava
-    DEPENDS
-        LangParser.java
-        LangLexer.java
-)
-
-
-add_custom_command(
-        COMMAND echo "Hello from custom command"
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        OUTPUT  dummyfile.txt
-        COMMENT "Running custom command..."
-)
-add_custom_target(
-        ExampleCustomTarget # not in ALL
-        DEPENDS dummyfile.txt
-)
-add_dependencies(ExampleCustomTarget use_antlr4_vcpkg)
-]]
