@@ -4,6 +4,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 message(STATUS "toolchain: ${CMAKE_TOOLCHAIN_FILE}")
 
+find_package(antlr4-testrig-runner REQUIRED)
+DLF_example_function2("arg1" "arg2")
+
 find_package(antlr4-runtime CONFIG REQUIRED)
 find_package(antlr4-generator CONFIG REQUIRED)
 
