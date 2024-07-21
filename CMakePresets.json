@@ -5,9 +5,11 @@
         "name": "common-presets",
       "hidden": true,
       "binaryDir": "${sourceDir}/cmake-build-${presetName}",
-      "installDir": "../Common/cmake-install-${presetName}",
       "cacheVariables": {
-		"CMAKE_TOOLCHAIN_FILE": "C:\\source\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        }
       }
     },
     {
@@ -36,53 +38,70 @@
       "cacheVariables": {
 		"VCPKG_TARGET_TRIPLET": "wasm32-emscripten",
 		"VCPKG_HOST_TRIPLET": "x64-mingw-static",		  
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "C:\\source\\emsdk\\upstream\\emscripten\\cmake\\Modules\\Platform\\Emscripten.cmake"
+        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "$env{EMSDK}\\upstream\\emscripten\\cmake\\Modules\\Platform\\Emscripten.cmake"
+        }
       }
     },
     {
-      "name": "dbg-mgw",
-      "inherits": ["toolchain-mingw", "common-presets"]
+      "name": "build-type-debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
     },
     {
-      "name": "rel-mgw",
-      "inherits": ["toolchain-mingw", "common-presets"]
+      "name": "build-type-release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
     },
     {
-      "name": "dbg-ems",
-      "inherits": ["toolchain-emscripten", "common-presets"]
+      "name": "cfg-dbg-mgw",
+      "inherits": ["toolchain-mingw", "common-presets", "build-type-debug"]
     },
     {
-      "name": "rel-ems",
-      "inherits": ["toolchain-emscripten", "common-presets"]
+      "name": "cfg-rel-mgw",
+      "inherits": ["toolchain-mingw", "common-presets", "build-type-release"]
+    },
+    {
+      "name": "cfg-dbg-ems",
+      "inherits": ["toolchain-emscripten", "common-presets", "build-type-debug"]
+    },
+    {
+      "name": "cfg-rel-ems",
+      "inherits": ["toolchain-emscripten", "common-presets", "build-type-release"]
     }
   ],
     "buildPresets": [
       {
-        "name": "use-dbg-mgw",
+        "name": "bld-dbg-mgw",
         "displayName": "Debug - MinGW",
         "description": "Debug build for MinGW",
-        "configurePreset": "dbg-mgw",
+        "configurePreset": "cfg-dbg-mgw",
         "configuration": "Debug"
       },
         {
-            "name": "use-rel-mgw",
+            "name": "bld-rel-mgw",
             "displayName": "Release - MinGW",
             "description": "Release build for MinGW",
-            "configurePreset": "rel-mgw",
+            "configurePreset": "cfg-rel-mgw",
             "configuration": "Release"
         },
       {
-        "name": "use-dbg-ems",
+        "name": "bld-dbg-ems",
         "displayName": "Debug - Emscripten",
         "description": "Debug build with Emscripten",
-        "configurePreset": "dbg-ems",
+        "configurePreset": "cfg-dbg-ems",
         "configuration": "Debug"
       },
       {
-        "name": "use-rel-ems",
+        "name": "bld-rel-ems",
         "displayName": "Release - Emscripten",
         "description": "Release build with Emscripten",
-        "configurePreset": "rel-ems",
+        "configurePreset": "cfg-rel-ems",
         "configuration": "Release"
       }
     ]

@@ -55,8 +55,7 @@ antlr4_generate(
         "${ANTLR4_TOKEN_DIRECTORY_LangLexer}"
 )
 
-add_executable(use_antlr4_vcpkg main.cpp
-        test_rig/test_rig_main.cpp)
+add_executable(use_antlr4_vcpkg main.cpp)
 target_link_libraries(use_antlr4_vcpkg antlr4_static)
 
 target_include_directories(use_antlr4_vcpkg PRIVATE "${ANTLR4_INCLUDE_DIR_LangLexer}" "${ANTLR4_INCLUDE_DIR_LangParser}")
